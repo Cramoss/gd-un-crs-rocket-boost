@@ -54,6 +54,8 @@ public class Movement : MonoBehaviour
 
     private void ApplyRotation(Vector3 rotationDirection)
     {
+        _rigidbody.freezeRotation = true;
         transform.Rotate(rotationDirection * rotationStrength * Time.fixedDeltaTime);
+        _rigidbody.freezeRotation = false;
     }
 }
