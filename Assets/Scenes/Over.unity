@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 4534a9edf71f142d782a9ef3d32de96f, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -212,7 +212,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: -0.00000033780347, y: -0.7071064, z: -0.00000033274884, w: 0.70710725}
-  m_LocalPosition: {x: 11.999998, y: 0.6999886, z: -15.000013}
+  m_LocalPosition: {x: 11.999998, y: 0.7399886, z: -15.000013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -819,7 +819,7 @@ Transform:
   m_GameObject: {fileID: 1953182759}
   serializedVersion: 2
   m_LocalRotation: {x: -0.00000033780347, y: -0.7071064, z: -0.00000033274884, w: 0.70710725}
-  m_LocalPosition: {x: 11.999998, y: 0.6999886, z: -15.000013}
+  m_LocalPosition: {x: 11.999998, y: 0.7399886, z: -15.000013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -867,10 +867,6 @@ PrefabInstance:
     - target: {fileID: 2552725247938434040, guid: 5674df178a2835c4aa09a460eb3de935, type: 3}
       propertyPath: m_Name
       value: Launch Pad
-      objectReference: {fileID: 0}
-    - target: {fileID: 2552725247938434040, guid: 5674df178a2835c4aa09a460eb3de935, type: 3}
-      propertyPath: m_TagString
-      value: Finish
       objectReference: {fileID: 0}
     - target: {fileID: 2893222711217801538, guid: 5674df178a2835c4aa09a460eb3de935, type: 3}
       propertyPath: m_LocalPosition.x
@@ -982,17 +978,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 397677078527822217, guid: 2503c27e922ad794a8370da049941ac5, type: 3}
-      propertyPath: loadSceneDelay
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 623043191441922739, guid: 2503c27e922ad794a8370da049941ac5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 623043191441922739, guid: 2503c27e922ad794a8370da049941ac5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.7
+      value: 0.74
       objectReference: {fileID: 0}
     - target: {fileID: 623043191441922739, guid: 2503c27e922ad794a8370da049941ac5, type: 3}
       propertyPath: m_LocalPosition.z

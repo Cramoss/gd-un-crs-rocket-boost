@@ -8,6 +8,10 @@ public class Movement : MonoBehaviour
     [SerializeField] InputAction rotation;
     [SerializeField] float thrustStrength;
     [SerializeField] float rotationStrength;
+    [SerializeField] AudioClip mainEngineClip;
+    [SerializeField] ParticleSystem mainEngineParticles;
+    [SerializeField] ParticleSystem leftEngineParticles;
+    [SerializeField] ParticleSystem rightEngineParticles;
     Rigidbody _rigidbody;
     AudioSource _audioSource;
 
@@ -33,19 +37,35 @@ public class Movement : MonoBehaviour
     {
         if (thrust.IsPressed())
         {
-            _rigidbody.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
-
-            if (!_audioSource.isPlaying)
-            {
-            _audioSource.Play();
-            }
+            StartThrusting();
         }
         else
         {
-            _audioSource.Stop();
+            StopThrusting();
         }
     }
+    
+    private void StartThrusting()
+    {
+        _rigidbody.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
 
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.PlayOneShot(mainEngineClip);
+        }
+
+        if (!mainEngineParticles.isPlaying)
+        {
+            mainEngineParticles.Play();
+        }
+    }
+    
+    private void StopThrusting()
+    {
+        _audioSource.Stop();
+        mainEngineParticles.Stop();
+    }
+    
     void ProcessRotation()
     {
        float rotationInput = rotation.ReadValue<float>();
@@ -54,15 +74,44 @@ public class Movement : MonoBehaviour
        // pointing to the left arrow by default.
        if (rotationInput < 0)
        {
-           ApplyRotation(Vector3.right);
+           RotateRight();
        }
-       
-       if (rotationInput > 0)
+       else if (rotationInput > 0)
        {
-           ApplyRotation(Vector3.left);
+           RotateLeft();
+       }
+       else
+       {
+           StopRotation();
        }
     }
+    
+    private void RotateRight()
+    {
+        ApplyRotation(Vector3.right);
+        if (!leftEngineParticles.isPlaying)
+        {
+            rightEngineParticles.Stop();
+            leftEngineParticles.Play();
+        }
+    }
 
+    private void RotateLeft()
+    {
+        ApplyRotation(Vector3.left);
+        if (!rightEngineParticles.isPlaying)
+        {
+            leftEngineParticles.Stop();
+            rightEngineParticles.Play();
+        }
+    }
+    
+    private void StopRotation()
+    {
+        leftEngineParticles.Stop();
+        rightEngineParticles.Stop();
+    }
+    
     private void ApplyRotation(Vector3 rotationDirection)
     {
         _rigidbody.freezeRotation = true;
