@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
@@ -13,19 +14,28 @@ public class CollisionHandler : MonoBehaviour
     AudioSource _audioSource;
 
     bool isControllable = true;
+    bool isCollidable = true; // Debug flag for collision toggle
 
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
     }
+
+    void Update()
+    {
+        RespondToDebugKeys();
+    }
     
+    // OnCollisionEnter is Unity's collision callback
     private void OnCollisionEnter(Collision other)
     {
-        if (!isControllable)
+        // Prevent multiple collision triggers
+        if (!isControllable || !isCollidable)
         {
             return;
         }
 
+        // Handle collisions based on object tags
         switch (other.gameObject.tag)
         {
             case "Friendly":
@@ -48,6 +58,8 @@ public class CollisionHandler : MonoBehaviour
         isControllable = false;
        _audioSource.PlayOneShot(successSFX); 
         GetComponent<Movement>().enabled = false;
+        
+        // Invoke delays method execution without blocking
         Invoke("LoadNextLevel", levelLoadDelay);
     }
 
@@ -63,6 +75,7 @@ public class CollisionHandler : MonoBehaviour
 
     void ReloadLevel()
     {
+        // buildIndex is the scene number in Build Settings
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentScene, LoadSceneMode.Single);
     }
@@ -71,11 +84,25 @@ public class CollisionHandler : MonoBehaviour
     {
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
+        // Loop back to first level if we've completed all scenes
         if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings)
         {
             nextSceneIndex = 0;
         }
         
         SceneManager.LoadScene(nextSceneIndex, LoadSceneMode.Single);
+    }
+
+    // Debug keys: L = skip level, C = toggle collisions
+    void RespondToDebugKeys()
+    {
+        if (Keyboard.current.lKey.wasPressedThisFrame)
+        {
+            LoadNextLevel();
+        }
+        else if (Keyboard.current.cKey.wasPressedThisFrame)
+        {
+            isCollidable = !isCollidable;
+        }
     }
 }

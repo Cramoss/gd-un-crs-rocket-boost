@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour
     Rigidbody _rigidbody;
     AudioSource _audioSource;
 
+    // Enable InputActions when component becomes active
     void OnEnable()
     {
         thrust.Enable();
@@ -27,6 +28,7 @@ public class Movement : MonoBehaviour
         _audioSource =  GetComponent<AudioSource>();
     }
 
+    // FixedUpdate for physics - runs at fixed intervals (default 0.02s)
     void FixedUpdate()
     {
         ProcessThrust();
@@ -47,8 +49,12 @@ public class Movement : MonoBehaviour
     
     private void StartThrusting()
     {
+        // AddRelativeForce uses local space (Vector3.up = local Y-axis)
+        // Time.fixedDeltaTime makes movement frame-rate independent
         _rigidbody.AddRelativeForce(Vector3.up * thrustStrength * Time.fixedDeltaTime);
 
+        // Check if already playing to prevent audio restart stuttering.
+        // PlayOneShot is for one-shot sounds, not continuous streams.
         if (!_audioSource.isPlaying)
         {
             _audioSource.PlayOneShot(mainEngineClip);
@@ -67,11 +73,11 @@ public class Movement : MonoBehaviour
     }
     
     void ProcessRotation()
-    {
+    { 
+        // Read input from the rotation action
        float rotationInput = rotation.ReadValue<float>();
 
-       // For some reason the inputs are reverted, maybe because of the X axis origin which is
-       // pointing to the left arrow by default.
+       // Input is inverted - negative value rotates right, positive rotates left
        if (rotationInput < 0)
        {
            RotateRight();
@@ -114,8 +120,14 @@ public class Movement : MonoBehaviour
     
     private void ApplyRotation(Vector3 rotationDirection)
     {
+        // Freeze physics rotation to prevent conflicts with manual rotation
         _rigidbody.freezeRotation = true;
+        
+        // Rotation calculation: direction * degrees_per_second * Time.fixedDeltaTime
+        // Example: 100 * 0.02 = 2 degrees per physics step
         transform.Rotate(rotationDirection * rotationStrength * Time.fixedDeltaTime);
+        
+        // Re-enable physics rotation
         _rigidbody.freezeRotation = false;
     }
 }
